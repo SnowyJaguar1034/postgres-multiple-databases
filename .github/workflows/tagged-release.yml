@@ -1,0 +1,44 @@
+name: Build & Release Image from Git Tag
+
+on:
+  push:
+    tags:
+      - 'v*'  # Matches tags like v16.9-alpine3.22
+
+permissions:
+  packages: write
+  contents: write
+
+jobs:
+  build_and_release:
+    name: Build & Publish Image for ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Tagged Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          pull: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/postgres-multiple-databases:${{ github.ref_name }}
+          labels: |
+            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.version=${{ github.ref_name }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
