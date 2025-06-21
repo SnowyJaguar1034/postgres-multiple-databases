@@ -25,7 +25,7 @@ jobs:
       matrix:  
         version: ${{ fromJson(needs.get_versions.outputs.matrix).versions }}
     steps:
-    - run: echo "Publishing danielptv/postgres-multiple-databases:${{ matrix.version }} to Docker Hub and GitHub Container Registry"
+    - run: echo "Publishing SnowyJaguar1034/postgres-multiple-databases:${{ matrix.version }} to Docker Hub and GitHub Container Registry"
     - name: Checkout
       uses: actions/checkout@v4
     - name: Log in to Docker Hub
@@ -48,5 +48,5 @@ jobs:
           POSTGRES_TAG=${{ matrix.version }}
         push: true
         tags: |
-          danielptv/postgres-multiple-databases:${{ matrix.version }}
-          ghcr.io/danielptv/postgres-multiple-databases:${{ matrix.version }}
+          SnowyJaguar1034/postgres-multiple-databases:${{ matrix.version }}
+          ghcr.io/SnowyJaguar1034/postgres-multiple-databases:${{ matrix.version }}
