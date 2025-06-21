@@ -51,5 +51,5 @@ jobs:
           POSTGRES_TAG=${{ matrix.version }}
         push: true
         tags: |
-          SnowyJaguar1034/postgres-multiple-databases:${{ matrix.version }}
+          snowyjaguar1034/postgres-multiple-databases:${{ matrix.version }}
           ghcr.io/snowyjaguar1034/postgres-multiple-databases:${{ matrix.version }}
